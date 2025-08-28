@@ -17,7 +17,7 @@ static ThemeData get theme=>ThemeData(
 
   cardTheme: CardThemeData(
     
-  
+  color: Colors.white,
     shape: RoundedRectangleBorder(
       side: BorderSide(
         color: AppColors.aLOrange,

@@ -50,7 +50,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         body: SafeArea(
           child: TabBarView(
             controller: _tabController,
-            children: const [ImageUploadView(), ImageViewerView()],
+            children:  [ImageUploadView(), ImageViewerView()],
           ),
         ),
       ),
