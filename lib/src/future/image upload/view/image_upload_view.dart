@@ -1,10 +1,16 @@
-import 'package:firebase_image_upload/src/future/image%20upload/view%20model/image_upload_model_view.dart';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:firebase_image_upload/src/future/image%20upload/service/image_upload_service.dart';
+import 'package:firebase_image_upload/src/future/image%20upload/view/widgets/button/custom_text_button.dart';
+import 'package:firebase_image_upload/src/future/image%20upload/view/widgets/button/image_picker_card_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:image_picker/image_picker.dart';
-
 import '../../../core/mixins/image_picker_mixin.dart';
-import '../../../core/utility/image_picker_manager.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/utility/constants/animation_durations.dart';
+import '../../../core/utility/constants/sized_box.dart';
+import '../view model/image_upload_model_view.dart';
 
 class ImageUploadView extends StatefulWidget {
   ImageUploadView({super.key});
@@ -15,52 +21,97 @@ class ImageUploadView extends StatefulWidget {
 
 class _ImageUploadViewState extends State<ImageUploadView>
     with ImagePickerManagerMixin {
-  double iconSize = 100;
+  final ImageUploadModelView viewModel = ImageUploadModelView();
+  CrossFadeState cardOrImage = CrossFadeState.showFirst;
+  void changeCrossFadeState() {
+    setState(() {
+      cardOrImage == CrossFadeState.showFirst
+          ? cardOrImage = CrossFadeState.showSecond
+          : cardOrImage = CrossFadeState.showFirst;
+    });
+  }
 
-  double dimension = 200;
-
-  String text = 'Tap to Upload image';
-
-  final ImageUploadModelView modelView = ImageUploadModelView();
-  XFile? image;
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         const Spacer(flex: 1),
-        Center(
-          child: Card(
-            child: GestureDetector(
-              onTap: () async {
-                modelView.imageUpload(
-                  await imagePickerManager.getImageGallery(),
-                );
-              },
-
-              child: SizedBox.square(
-                dimension: dimension,
-
+        AnimatedCrossFade(
+          firstChild: ImagePickerCardButton(
+            onPressed: () async {
+              viewModel.saveLocalImage(
+                await imagePickerManager.getImageGallery(),
+              );
+              if (viewModel.image == null) return;
+              setState(() {
+                changeCrossFadeState();
+              });
+            },
+          ),
+          secondChild: Observer(
+            builder: (context) {
+              return ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.9,
+                  maxHeight: MediaQuery.of(context).size.height * 0.65,
+                ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.upload, size: iconSize),
-                    Text(text),
-                    Observer(
-                      builder: (context) {
-                        return modelView.image != null
-                            ? Image.file(modelView.image!)
-                            : SizedBox.shrink();
-                      },
+                    Expanded(
+                      child: FittedBox(
+                        child: viewModel.image == null
+                            ? SizedBox()
+                            : Image.file(viewModel.image!),
+                      ),
+                    ),
+                    SizedBoxses.mediumHeight,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+
+                      children: [
+                        CustomTextButton(
+                          iconData: Icons.cancel_outlined,
+                          color: AppColors.lustRed,
+                          text: 'Remove',
+                          onPressed: () {
+                            viewModel.removeLocalImage();
+                            changeCrossFadeState();
+                          },
+                        ),
+                        SizedBoxses.mediumWidth,
+                        CustomTextButton(
+                          color: AppColors.malachiteGreen,
+                          iconData: Icons.upload,
+                          text: 'Upload',
+                          onPressed: () async {
+                            final response = await viewModel
+                                .imageUploadToStorage();
+                            if (response.statusCode == HttpStatus.ok) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Image uploaded successfully!'),
+                                ),
+                              );
+                            }
+                            ;
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ),
-            ),
+              );
+            },
           ),
+
+          crossFadeState: cardOrImage,
+          duration: AnimationDurations.medium,
+          alignment: Alignment.center,
         ),
 
-        const Spacer(flex: 2),
+        Spacer(flex: 2),
       ],
     );
   }

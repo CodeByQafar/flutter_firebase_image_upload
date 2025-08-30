@@ -1,9 +1,11 @@
 import 'package:firebase_image_upload/src/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 
+
 class AppTheme{
 static ThemeData get theme=>ThemeData(
   primaryColor:  AppColors.aLOrange,
+  scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
     titleTextStyle: TextStyle(
       color: AppColors.aLOrange,
@@ -13,7 +15,8 @@ static ThemeData get theme=>ThemeData(
     centerTitle: true,
     elevation: 0,
   ),
-  splashColor: AppColors.aLOrange.withOpacity(0.5),
+
+  
 
   cardTheme: CardThemeData(
     
@@ -37,7 +40,22 @@ static ThemeData get theme=>ThemeData(
     labelColor: AppColors.aLOrange,
     unselectedLabelColor: Colors.grey,
   ),
+textTheme: TextTheme(
+  bodyLarge: TextStyle(
+    color: Colors.black,
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  ),
+  
+  //delete text
+  bodyMedium: TextStyle(
+    fontSize: 18,
+  ),
+  //confirm text
+ )
 );
+
+
 }
 
 

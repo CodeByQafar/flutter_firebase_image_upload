@@ -9,6 +9,24 @@ part of 'image_upload_model_view.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ImageUploadModelView on _ImageUploadModelViewBase, Store {
+  late final _$imageAtom = Atom(
+    name: '_ImageUploadModelViewBase.image',
+    context: context,
+  );
+
+  @override
+  File? get image {
+    _$imageAtom.reportRead();
+    return super.image;
+  }
+
+  @override
+  set image(File? value) {
+    _$imageAtom.reportWrite(value, super.image, () {
+      super.image = value;
+    });
+  }
+
   late final _$isLoadingAtom = Atom(
     name: '_ImageUploadModelViewBase.isLoading',
     context: context,
@@ -25,6 +43,18 @@ mixin _$ImageUploadModelView on _ImageUploadModelViewBase, Store {
     _$isLoadingAtom.reportWrite(value, super.isLoading, () {
       super.isLoading = value;
     });
+  }
+
+  late final _$imageUploadToStorageAsyncAction = AsyncAction(
+    '_ImageUploadModelViewBase.imageUploadToStorage',
+    context: context,
+  );
+
+  @override
+  Future<Response<dynamic>> imageUploadToStorage() {
+    return _$imageUploadToStorageAsyncAction.run(
+      () => super.imageUploadToStorage(),
+    );
   }
 
   late final _$_ImageUploadModelViewBaseActionController = ActionController(
@@ -44,8 +74,31 @@ mixin _$ImageUploadModelView on _ImageUploadModelViewBase, Store {
   }
 
   @override
+  void saveLocalImage(XFile? file) {
+    final _$actionInfo = _$_ImageUploadModelViewBaseActionController
+        .startAction(name: '_ImageUploadModelViewBase.saveLocalImage');
+    try {
+      return super.saveLocalImage(file);
+    } finally {
+      _$_ImageUploadModelViewBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void removeLocalImage() {
+    final _$actionInfo = _$_ImageUploadModelViewBaseActionController
+        .startAction(name: '_ImageUploadModelViewBase.removeLocalImage');
+    try {
+      return super.removeLocalImage();
+    } finally {
+      _$_ImageUploadModelViewBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+image: ${image},
 isLoading: ${isLoading}
     ''';
   }
