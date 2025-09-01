@@ -86,15 +86,16 @@ class _ImageUploadViewState extends State<ImageUploadView>
                           iconData: Icons.upload,
                           text: 'Upload',
                           onPressed: () async {
-                            final response = await viewModel
+                            //final response =
+                             await viewModel
                                 .imageUploadToStorage();
-                            if (response.statusCode == HttpStatus.ok) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Image uploaded successfully!'),
-                                ),
-                              );
-                            }
+                            // if (response.statusCode == HttpStatus.ok) {
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     SnackBar(
+                            //       content: Text('Image uploaded successfully!'),
+                            //     ),
+                            //   );
+                            // }
                             ;
                           },
                         ),

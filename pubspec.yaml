@@ -19,17 +19,20 @@ dependencies:
 
   #theme
   cupertino_icons: ^1.0.8
-
+  
+  #service
+  flutter_dotenv: ^6.0.0
+ 
   #functionality
   image_picker: ^1.2.0
 
   #state management
-  mobx: ^2.5.0
   flutter_mobx: ^2.0.6
+  mobx: ^2.5.0
 
-  #service
+  #network
   dio: ^5.9.0
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -45,7 +48,8 @@ flutter:
   uses-material-design: true
 
   
-  
+  assets:
+   - .env
   
   
   

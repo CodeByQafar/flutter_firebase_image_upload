@@ -51,7 +51,7 @@ mixin _$ImageUploadModelView on _ImageUploadModelViewBase, Store {
   );
 
   @override
-  Future<Response<dynamic>> imageUploadToStorage() {
+  Future<void> imageUploadToStorage() {
     return _$imageUploadToStorageAsyncAction.run(
       () => super.imageUploadToStorage(),
     );
@@ -79,6 +79,17 @@ mixin _$ImageUploadModelView on _ImageUploadModelViewBase, Store {
         .startAction(name: '_ImageUploadModelViewBase.saveLocalImage');
     try {
       return super.saveLocalImage(file);
+    } finally {
+      _$_ImageUploadModelViewBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void uploadImageUrl(dynamic response) {
+    final _$actionInfo = _$_ImageUploadModelViewBaseActionController
+        .startAction(name: '_ImageUploadModelViewBase.uploadImageUrl');
+    try {
+      return super.uploadImageUrl(response);
     } finally {
       _$_ImageUploadModelViewBaseActionController.endAction(_$actionInfo);
     }
