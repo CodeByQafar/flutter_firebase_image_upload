@@ -51,16 +51,11 @@ abstract class _ImageUploadModelViewBase with Store {
 
   @action
   Future<void> imageUploadToStorage() async {
-    print(baseUrl);
     final response = await imageUploadService.uploadImage(
       imageBytes: await image!.readAsBytes(),
       name: image!.path.split('/').last,
       onSendProgress: (count, total) {
-        // Future.delayed(Duration(seconds: 1), () {
-        //   print(
-        //     'Uploaded $count of $total bytes - ${(count / total * 100).toStringAsFixed(0)}%',
-        //   );
-        // });
+        
       },
     );
     uploadImageUrl(response);

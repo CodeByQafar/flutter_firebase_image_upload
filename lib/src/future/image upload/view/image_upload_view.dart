@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
-import 'package:firebase_image_upload/src/future/image%20upload/service/image_upload_service.dart';
 import 'package:firebase_image_upload/src/future/image%20upload/view/widgets/button/custom_text_button.dart';
 import 'package:firebase_image_upload/src/future/image%20upload/view/widgets/button/image_picker_card_button.dart';
 import 'package:flutter/material.dart';
@@ -86,17 +82,9 @@ class _ImageUploadViewState extends State<ImageUploadView>
                           iconData: Icons.upload,
                           text: 'Upload',
                           onPressed: () async {
-                            //final response =
                              await viewModel
                                 .imageUploadToStorage();
-                            // if (response.statusCode == HttpStatus.ok) {
-                            //   ScaffoldMessenger.of(context).showSnackBar(
-                            //     SnackBar(
-                            //       content: Text('Image uploaded successfully!'),
-                            //     ),
-                            //   );
-                            // }
-                            ;
+                     
                           },
                         ),
                       ],
