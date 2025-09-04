@@ -85,17 +85,6 @@ mixin _$ImageUploadModelView on _ImageUploadModelViewBase, Store {
   }
 
   @override
-  void uploadImageUrl(dynamic response) {
-    final _$actionInfo = _$_ImageUploadModelViewBaseActionController
-        .startAction(name: '_ImageUploadModelViewBase.uploadImageUrl');
-    try {
-      return super.uploadImageUrl(response);
-    } finally {
-      _$_ImageUploadModelViewBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void removeLocalImage() {
     final _$actionInfo = _$_ImageUploadModelViewBaseActionController
         .startAction(name: '_ImageUploadModelViewBase.removeLocalImage');

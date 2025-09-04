@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_image_upload/src/core/utility/services/env_service.dart';
 import 'package:firebase_image_upload/src/future/image%20viewer/model/image_viewr_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -45,7 +46,7 @@ class _ImageViewerViewState extends State<ImageViewerView> {
                     height: 100,
                     width: 100,
                     fit: BoxFit.cover,
-               ''
+               EnvService.baseUrl+EnvService.bucketName + (imagesUrls[i] ?? '').replaceAll('/', '%2F') + '?alt=media'
                   );
                 },
               );

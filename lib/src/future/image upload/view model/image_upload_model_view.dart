@@ -35,14 +35,7 @@ abstract class _ImageUploadModelViewBase with Store {
     image = File(file.path);
   }
 
-  @action
-  void uploadImageUrl(dynamic response) {
-    if (response == null) return;
-    print(
-      '$baseUrl/o/' +
-          (response.name?.replaceAll('/', '%2F') ?? '')+'?alt=media&token=${response.downloadTokens}',
-    );
-  }
+
 
   @action
   void removeLocalImage() {
@@ -51,13 +44,12 @@ abstract class _ImageUploadModelViewBase with Store {
 
   @action
   Future<void> imageUploadToStorage() async {
-    final response = await imageUploadService.uploadImage(
+    await imageUploadService.uploadImage(
       imageBytes: await image!.readAsBytes(),
       name: image!.path.split('/').last,
       onSendProgress: (count, total) {
         
       },
     );
-    uploadImageUrl(response);
   }
 }
