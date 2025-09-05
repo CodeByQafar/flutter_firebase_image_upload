@@ -1,12 +1,9 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:firebase_image_upload/src/core/utility/services/env_service.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mobx/mobx.dart';
-
-import '../model/image_upload_response.dart';
 import '../service/image_upload_service.dart';
+import 'package:mobx/mobx.dart';
+import 'package:dio/dio.dart';
+import 'dart:io';
 part 'image_upload_model_view.g.dart';
 
 class ImageUploadModelView = _ImageUploadModelViewBase

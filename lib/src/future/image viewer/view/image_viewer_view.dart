@@ -1,10 +1,10 @@
-import 'package:dio/dio.dart';
-import 'package:firebase_image_upload/src/core/utility/services/env_service.dart';
-import 'package:firebase_image_upload/src/future/image%20viewer/model/image_viewr_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-
+import 'package:firebase_image_upload/src/future/image%20viewer/view/widgets/card/custom_image_card.dart';
+import '../../../core/utility/constants/assets.dart';
 import '../view model/image_viewer_view_model.dart';
+import 'package:lottie/lottie.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
 class ImageViewerView extends StatefulWidget {
   const ImageViewerView({super.key});
@@ -19,8 +19,13 @@ class _ImageViewerViewState extends State<ImageViewerView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final response = await viewModel.listAllImages();
+    WidgetsBinding.instance.addPostFrameCallback((_)  {
+    _loadImages();
+    });
+  }
+
+Future<void> _loadImages()async{
+    final response = await viewModel.listAllImages();
       setState(() {
         if (response == null) {
           imagesUrls = List.empty();
@@ -28,29 +33,43 @@ class _ImageViewerViewState extends State<ImageViewerView> {
           imagesUrls = response.items!.map((item) => item.name).toList();
         }
       });
-
-      print(imagesUrls);
-    });
-  }
-
+}
   @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (context) {
         return viewModel.isLoading
-            ? Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                itemCount: imagesUrls.length,
-                itemBuilder: (BuildContext context, int i) {
-                  return Image.network(
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
-               EnvService.baseUrl+EnvService.bucketName + (imagesUrls[i] ?? '').replaceAll('/', '%2F') + '?alt=media'
-                  );
-                },
-              );
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Spacer(flex: 2),
+                  CircularProgressIndicator(),
+                  Spacer(flex: 2),
+                ],
+              )
+            : imagesUrls.isEmpty
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Spacer(flex: 1),
+                  SizedBox.square(
+                    dimension: 300,
+                    child: Lottie.asset(Assets.lottieNotFound),
+                  ),
+                  Spacer(flex: 2),
+                ],
+              )
+            : RefreshIndicator(
+              onRefresh: _loadImages,
+              child: ListView.builder(
+                  itemCount: imagesUrls.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return CustomImageCard(imagesUrls: imagesUrls[index]);
+                  },
+                ),
+            );
       },
     );
   }
 }
+
